@@ -1,0 +1,26 @@
+# Python
+venv/
+*.pyc
+__pycache__/
+.Python
+# Python
+venv/
+*.pyc
+__pycache__/
+.Python
+
+# Data files (too large for Git)
+data/
+
+# Environment variables (SECRETS - never commit)
+.env
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+dbt/dbt_modules/
+
+# OS files
+.DS_Store
+.vscode/

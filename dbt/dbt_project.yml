@@ -1,0 +1,14 @@
+name: streaming_marketing
+version: "1.0.0"
+profile: streaming_marketing
+model-paths: ["models"]
+models:
+  streaming_marketing:
+    staging:
+      +materialized: view
+      +schema: dbt_dev
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      +materialized: table
+      +schema: dbt_dev
