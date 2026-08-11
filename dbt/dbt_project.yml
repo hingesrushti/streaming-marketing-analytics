@@ -6,9 +6,7 @@ models:
   streaming_marketing:
     staging:
       +materialized: view
-      +schema: dbt_dev
     intermediate:
-      +materialized: ephemeral
+      +materialized: view
     marts:
       +materialized: table
-      +schema: dbt_dev

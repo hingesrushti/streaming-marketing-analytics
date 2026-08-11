@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: streaming_marketing
+    schema: bronze
+    tables:
+      - name: users
+      - name: plans
+      - name: marketing_spend
+      - name: subscription_events
+      - name: engagement_events

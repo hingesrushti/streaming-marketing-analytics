@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: mart_channel_efficiency
+    description: "Channel efficiency metrics: LTV:CAC ratio and payback period"
+    columns:
+      - name: acquisition_channel
+        description: "Marketing channel"
+        data_tests:
+          - not_null
+          - unique
+      - name: ltv
+        description: "Average lifetime value per subscriber"
+        data_tests:
+          - not_null
+      - name: cac
+        description: "Customer acquisition cost (0 for organic/unpaid channels)"
+      - name: ltv_to_cac_ratio
+        description: "LTV divided by CAC. NULL for zero-cost channels (infinite ROI)."
+        # Note: No not_null test - NULL is valid for organic channels
