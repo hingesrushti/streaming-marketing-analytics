@@ -1,0 +1,54 @@
+name: dbt CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  dbt-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dbt
+    
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DBT_PROFILES_DIR: .
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install "dbt-core==1.8.7" "dbt-databricks==1.8.6"
+      
+      - name: Install dbt packages
+        run: dbt deps
+      
+      - name: Run dbt debug
+        run: dbt debug
+      
+      - name: Run dbt build (models + tests)
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "Running in CI schema for PR"
+            dbt build --target ci
+          else
+            echo "Running in prod schema for main branch"
+            dbt build --target prod
+          fi
+      
+      - name: Generate dbt docs
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: dbt docs generate --target prod
